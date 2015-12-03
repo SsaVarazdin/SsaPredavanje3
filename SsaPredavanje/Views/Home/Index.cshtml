@@ -1,0 +1,120 @@
+﻿@model SsaPredavanje.Models.HomeViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+@if (Request.IsAuthenticated)
+{
+    <div class="row">
+        <div class="panel panel-default col-md-3 top7">
+            <div class="panel-body">
+                <h4><strong>@Model.DisplayName</strong></h4>
+                <h5>@Model.Handle</h5>
+
+                <div class="col-md-4">
+                    <h6 class="text-muted">TWEETS</h6>
+                    <h3 class="text-muted">@Model.TweetsCount</h3>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-muted">FOLLOWING</h6>
+                    <h3 class="text-muted">@Model.Following</h3>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-muted">FOLLOWERS</h6>
+                    <h3 class="text-muted">@Model.Followers</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default col-md-6 top7">
+            <div class="panel-body">
+                @Html.Partial("~/Views/Tweets/Create.cshtml", new SsaPredavanje.Models.Tweet())
+
+                @foreach (var tweet in Model.Tweets.ToList())
+                {
+                    <span class="h5"><strong>@tweet.User.DisplayName</strong></span>
+                    <span class="h5 text-muted">@@@tweet.User.Handle</span>
+                    <span class="h5 text-muted">@tweet.CreationDate.ToString("dd:MM:yyyy hh:mm")</span>
+                    <p>@tweet.Comment</p>
+                }
+              
+
+            </div>
+        </div>
+
+
+        <div class="col-md-3 top7">
+            <div class="panel panel-default">
+                <div class="panel-heading">Who to follow</div>
+                <div class="panel-body">
+                    @foreach (var user in Model.Users.ToList())
+                    {
+                        <span class="h5"><strong>@user.DisplayName</strong></span>
+                        <span class="h5 text-muted">@user.Handle</span>
+
+                        using (Html.BeginForm("Follow", "User", new {userId = user.Id}, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit">Follow</button>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 top7">
+            <div class="panel panel-default">
+                <div class="panel-heading">Following</div>
+                <div class="panel-body">
+                    @foreach (var user in Model.UsersIFollow.ToList())
+                    {
+                        <span class="h5"><strong>@user.DisplayName</strong></span>
+                        <span class="h5 text-muted">@user.Handle</span>
+
+                        using (Html.BeginForm("Unfollow", "User", new { userId = user.Id }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit">Unfollow</button>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+
+    <div class="jumbotron">
+        <h1>ASP.NET</h1>
+        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+        <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Getting started</h2>
+            <p>
+                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+                enables a clean separation of concerns and gives you full control over markup
+                for enjoyable, agile development.
+            </p>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Get more libraries</h2>
+            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Web Hosting</h2>
+            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+            <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        </div>
+    </div>
+}

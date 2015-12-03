@@ -1,0 +1,24 @@
+﻿@model SsaPredavanje.Models.Tweet
+
+@using (Html.BeginForm("Create", "Tweets")) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="col-md-12">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                    @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                    <input type="submit" value="Tweet" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
